@@ -1,4 +1,5 @@
-import { Leaf, Instagram, Twitter, Facebook, Mail } from "lucide-react";
+import { Instagram, Twitter, Facebook, Mail } from "lucide-react";
+import greviaLogo from "@/assets/grevia-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -37,12 +38,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <a href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-lime rounded-squircle flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-foreground" />
-              </div>
-              <span className="text-xl font-extrabold tracking-tight">
-                PureSweet
-              </span>
+              <img 
+                src={greviaLogo} 
+                alt="Grevia - Healthy Natural Foods" 
+                className="h-12 w-auto brightness-0 invert"
+              />
             </a>
             <p className="text-primary-foreground/70 max-w-sm mb-6 leading-relaxed">
               Experience the pure taste of nature with our premium organic sweeteners. 
@@ -121,7 +121,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-primary-foreground/50">
-            © {currentYear} PureSweet. All rights reserved.
+            © {currentYear} Grevia. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (

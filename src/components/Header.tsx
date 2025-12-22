@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Leaf, ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import greviaLogo from "@/assets/grevia-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,12 +25,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-primary rounded-squircle flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Leaf className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-extrabold text-foreground tracking-tight">
-              PureSweet
-            </span>
+            <img 
+              src={greviaLogo} 
+              alt="Grevia - Healthy Natural Foods" 
+              className="h-10 md:h-12 w-auto group-hover:scale-105 transition-transform"
+            />
           </a>
 
           {/* Desktop Navigation */}

@@ -8,9 +8,9 @@ import product3 from "@/assets/product-3.jpg";
 const products = [
   {
     id: 1,
-    name: "Pure Organic Sweetener",
-    description: "Premium blend in elegant glass jar",
-    price: 24.99,
+    name: "Grevia Stevia Jar",
+    description: "Premium stevia in elegant glass jar",
+    price: 499,
     rating: 4.9,
     reviews: 128,
     image: product1,
@@ -18,9 +18,9 @@ const products = [
   },
   {
     id: 2,
-    name: "Stevia Leaf Powder",
+    name: "Grevia Stevia Powder",
     description: "Organic stevia in eco-friendly pouch",
-    price: 18.99,
+    price: 349,
     rating: 4.8,
     reviews: 96,
     image: product2,
@@ -28,9 +28,9 @@ const products = [
   },
   {
     id: 3,
-    name: "Monk Fruit Drops",
+    name: "Grevia Monkfruit Drops",
     description: "Liquid sweetener for beverages",
-    price: 14.99,
+    price: 299,
     rating: 4.7,
     reviews: 74,
     image: product3,
@@ -154,7 +154,7 @@ const ProductsSection = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-2xl font-black text-foreground">
-                      ${product.price}
+                      ₹{product.price}
                     </span>
                   </div>
                   <Button variant="outline" size="sm">
