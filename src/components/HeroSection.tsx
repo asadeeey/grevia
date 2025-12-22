@@ -75,7 +75,7 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8">
-              Experience the pure taste of nature with our premium Stevia and Monkfruit sweeteners. Zero calories, zero guilt, endless flavor.
+              Experience the pure taste of nature with Grevia's premium Stevia and Monkfruit sweeteners. Zero calories, zero guilt, endless flavor.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -103,7 +103,7 @@ const HeroSection = () => {
               <div className="relative rounded-squircle-xl overflow-hidden shadow-card">
                 <img
                   src={heroBg}
-                  alt="Fresh stevia leaves, monk fruit slices, and natural sweetener crystals arranged on a cream surface"
+                  alt="Grevia premium stevia and monkfruit organic sweetener products laid elegantly on cream marble surface"
                   className="w-full h-full object-cover"
                 />
               </div>
