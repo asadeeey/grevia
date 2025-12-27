@@ -2,16 +2,20 @@ import { motion } from "framer-motion";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 import greviaLogo from "@/assets/grevia-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { setIsCartOpen, getCartCount } = useCart();
+  const cartCount = getCartCount();
 
   const navLinks = [
-    { name: "Benefits", href: "#benefits" },
-    { name: "Ingredients", href: "#ingredients" },
-    { name: "Products", href: "#products" },
-    { name: "About", href: "#about" },
+    { name: "Benefits", href: "/#benefits" },
+    { name: "Sweeteners", href: "/products/sweeteners" },
+    { name: "Bakery", href: "/products/bakery" },
+    { name: "Pickles", href: "/products/pickles" },
   ];
 
   return (
@@ -24,34 +28,39 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group">
             <img 
               src={greviaLogo} 
               alt="Grevia - Healthy Natural Foods" 
               className="h-10 md:h-12 w-auto group-hover:scale-105 transition-transform"
             />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-lime after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="icon" aria-label="Shopping cart">
+            <Button variant="ghost" size="icon" aria-label="Shopping cart" className="relative" onClick={() => setIsCartOpen(true)}>
               <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-lime text-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </Button>
-            <Button variant="default" size="default">
-              Shop Now
+            <Button variant="default" size="default" asChild>
+              <Link to="/products/sweeteners">Shop Now</Link>
             </Button>
           </div>
 
@@ -81,17 +90,17 @@ const Header = () => {
           >
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
+                  to={link.href}
                   onClick={() => setIsMenuOpen(false)}
                   className="text-lg font-semibold text-foreground hover:text-primary transition-colors py-2"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
-              <Button variant="default" size="lg" className="mt-4">
-                Shop Now
+              <Button variant="default" size="lg" className="mt-4" asChild>
+                <Link to="/products/sweeteners" onClick={() => setIsMenuOpen(false)}>Shop Now</Link>
               </Button>
             </div>
           </motion.nav>
