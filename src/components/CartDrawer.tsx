@@ -1,7 +1,7 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
-import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { Minus, Plus, X, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CartDrawer = () => {
@@ -9,16 +9,22 @@ const CartDrawer = () => {
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-      <SheetContent className="w-full sm:max-w-lg flex flex-col">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2 text-xl font-black">
-            <ShoppingBag className="w-5 h-5" />
-            Your Cart ({getCartCount()})
+      <SheetContent className="w-full sm:max-w-md flex flex-col p-0">
+        {/* Header */}
+        <SheetHeader className="px-4 py-4 border-b border-border flex flex-row items-center justify-between">
+          <SheetTitle className="text-lg font-black uppercase tracking-wide">
+            Shopping Cart
           </SheetTitle>
+          <button 
+            onClick={() => setIsCartOpen(false)}
+            className="text-sm font-semibold text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+          >
+            Close <X className="w-4 h-4" />
+          </button>
         </SheetHeader>
 
         {items.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
+          <div className="flex-1 flex flex-col items-center justify-center text-center py-12 px-4">
             <ShoppingBag className="w-16 h-16 text-muted-foreground/30 mb-4" />
             <h3 className="text-lg font-bold text-foreground mb-2">Your cart is empty</h3>
             <p className="text-muted-foreground mb-6">Add some products to get started</p>
@@ -28,67 +34,88 @@ const CartDrawer = () => {
           </div>
         ) : (
           <>
-            <div className="flex-1 overflow-y-auto py-4 space-y-4">
+            {/* Cart Items */}
+            <div className="flex-1 overflow-y-auto">
               {items.map((item) => (
                 <div
                   key={item.product.id}
-                  className="flex gap-4 p-4 bg-secondary/30 rounded-squircle border border-border/50"
+                  className="flex gap-4 p-4 border-b border-border/50 hover:bg-secondary/20 transition-colors"
                 >
                   <img
                     src={item.product.image}
                     alt={item.product.name}
-                    className="w-20 h-20 object-cover rounded-squircle"
+                    className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-foreground truncate">{item.product.name}</h4>
-                    <p className="text-sm text-muted-foreground">₹{item.product.price}</p>
-                    
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                        className="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center hover:bg-secondary transition-colors"
-                        aria-label="Decrease quantity"
+                    <div className="flex items-start justify-between gap-2">
+                      <Link 
+                        to={`/product/${item.product.id}`}
+                        onClick={() => setIsCartOpen(false)}
+                        className="font-semibold text-foreground hover:text-lime transition-colors line-clamp-2 text-sm"
                       >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="w-8 text-center font-bold">{item.quantity}</span>
+                        {item.product.name}
+                      </Link>
                       <button
-                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                        className="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center hover:bg-secondary transition-colors"
-                        aria-label="Increase quantity"
+                        onClick={() => removeFromCart(item.product.id)}
+                        className="p-1 text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
+                        aria-label="Remove item"
                       >
-                        <Plus className="w-4 h-4" />
+                        <X className="w-4 h-4" />
                       </button>
                     </div>
-                  </div>
-                  <div className="flex flex-col items-end justify-between">
-                    <button
-                      onClick={() => removeFromCart(item.product.id)}
-                      className="p-2 text-muted-foreground hover:text-destructive transition-colors"
-                      aria-label="Remove item"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                    <span className="font-bold text-foreground">
-                      ₹{item.product.price * item.quantity}
-                    </span>
+                    
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          className="w-7 h-7 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-lime hover:border-lime hover:text-foreground transition-colors"
+                          aria-label="Decrease quantity"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </button>
+                        <span className="w-6 text-center font-semibold text-sm">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          className="w-7 h-7 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-lime hover:border-lime hover:text-foreground transition-colors"
+                          aria-label="Increase quantity"
+                        >
+                          <Plus className="w-3 h-3" />
+                        </button>
+                      </div>
+                      <span className="font-bold text-lime text-sm">
+                        {item.quantity} × ₹{item.product.price}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <SheetFooter className="border-t border-border pt-4 mt-4">
+            {/* Footer */}
+            <SheetFooter className="border-t border-border p-4 mt-auto bg-background">
               <div className="w-full space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span className="text-2xl font-black text-foreground">₹{getCartTotal()}</span>
+                  <span className="text-muted-foreground font-semibold uppercase text-sm tracking-wide">Subtotal:</span>
+                  <span className="text-2xl font-black text-lime">₹{getCartTotal().toLocaleString('en-IN')}</span>
                 </div>
-                <Button asChild variant="limeLg" className="w-full" size="lg" onClick={() => setIsCartOpen(false)}>
-                  <Link to="/checkout">Proceed to Checkout</Link>
-                </Button>
-                <Button variant="outline" className="w-full" onClick={() => setIsCartOpen(false)}>
-                  Continue Shopping
-                </Button>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button 
+                    variant="outline" 
+                    className="w-full rounded-full" 
+                    onClick={() => setIsCartOpen(false)}
+                    asChild
+                  >
+                    <Link to="/products/sweeteners">View Cart</Link>
+                  </Button>
+                  <Button 
+                    variant="limeLg" 
+                    className="w-full rounded-full" 
+                    onClick={() => setIsCartOpen(false)}
+                    asChild
+                  >
+                    <Link to="/checkout">Checkout</Link>
+                  </Button>
+                </div>
               </div>
             </SheetFooter>
           </>

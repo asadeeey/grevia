@@ -8,8 +8,9 @@ import greviaLogo from "@/assets/grevia-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { setIsCartOpen, getCartCount } = useCart();
+  const { setIsCartOpen, getCartCount, getCartTotal } = useCart();
   const cartCount = getCartCount();
+  const cartTotal = getCartTotal();
 
   const navLinks = [
     { name: "Benefits", href: "/#benefits" },
@@ -51,32 +52,64 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="icon" aria-label="Shopping cart" className="relative" onClick={() => setIsCartOpen(true)}>
-              <ShoppingCart className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-lime text-foreground text-xs font-bold rounded-full flex items-center justify-center">
-                  {cartCount}
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative flex items-center gap-2 px-3 py-2 rounded-squircle hover:bg-secondary/50 transition-colors group"
+              aria-label="Shopping cart"
+            >
+              <div className="relative">
+                <ShoppingCart className="w-5 h-5 text-foreground group-hover:text-lime transition-colors" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-lime text-foreground text-xs font-bold rounded-full flex items-center justify-center animate-in zoom-in duration-200">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              {cartTotal > 0 && (
+                <span className="text-sm font-bold text-foreground">
+                  ₹{cartTotal.toLocaleString('en-IN')}
                 </span>
               )}
-            </Button>
+            </button>
             <Button variant="default" size="default" asChild>
               <Link to="/products/sweeteners">Shop Now</Link>
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMenuOpen}
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6 text-foreground" />
-            ) : (
-              <Menu className="w-6 h-6 text-foreground" />
-            )}
-          </button>
+          {/* Mobile Cart & Menu */}
+          <div className="md:hidden flex items-center gap-2">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative flex items-center gap-1 px-2 py-2 rounded-squircle hover:bg-secondary/50 transition-colors"
+              aria-label="Shopping cart"
+            >
+              <div className="relative">
+                <ShoppingCart className="w-5 h-5 text-foreground" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-lime text-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              {cartTotal > 0 && (
+                <span className="text-xs font-bold text-foreground">
+                  ₹{cartTotal.toLocaleString('en-IN')}
+                </span>
+              )}
+            </button>
+            <button
+              className="p-2"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? (
+                <X className="w-6 h-6 text-foreground" />
+              ) : (
+                <Menu className="w-6 h-6 text-foreground" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
