@@ -36,6 +36,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return [...prev, { product, quantity }];
     });
+    // Auto-open cart drawer when item is added
+    setIsCartOpen(true);
   }, []);
 
   const removeFromCart = useCallback((productId: string) => {

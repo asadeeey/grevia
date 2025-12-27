@@ -36,11 +36,8 @@ const ProductsPage = () => {
 
   const handleAddToCart = (product: Product) => {
     addToCart(product);
-    toast.success(`${product.name} added to cart`, {
-      action: {
-        label: "View Cart",
-        onClick: () => setIsCartOpen(true),
-      },
+    toast.success(`${product.name} added to cart!`, {
+      duration: 2000,
     });
   };
 
