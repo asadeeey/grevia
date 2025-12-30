@@ -8,6 +8,8 @@ import { getProductById, getProductsByCategory, Product } from "@/data/products"
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { useState } from "react";
+import ImageZoom from "@/components/ImageZoom";
+import WishlistButton from "@/components/WishlistButton";
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -67,24 +69,22 @@ const ProductDetailPage = () => {
 
           {/* Product Details */}
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
-            {/* Image Gallery */}
+            {/* Image Gallery with Zoom */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              {product.badge && (
-                <div className="absolute top-4 left-4 z-10 bg-lime text-foreground text-sm font-bold px-4 py-2 rounded-squircle">
-                  {product.badge}
-                </div>
-              )}
-              <div className="aspect-square rounded-squircle-xl overflow-hidden bg-secondary/30 border border-border/50">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
+              <ImageZoom 
+                src={product.image} 
+                alt={product.name}
+                badge={product.badge}
+              />
+              
+              {/* Wishlist Button - Positioned on image */}
+              <div className="absolute top-4 right-4 z-10">
+                <WishlistButton product={product} size="lg" />
               </div>
             </motion.div>
 
@@ -182,7 +182,7 @@ const ProductDetailPage = () => {
                 </div>
               </div>
 
-              {/* Add to Cart */}
+              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                 <Button
                   variant="limeLg"
@@ -204,6 +204,11 @@ const ProductDetailPage = () => {
                 >
                   Buy Now
                 </Button>
+              </div>
+
+              {/* Wishlist Button with Label */}
+              <div className="mt-4">
+                <WishlistButton product={product} showLabel />
               </div>
 
               {/* Stock Status */}
@@ -229,8 +234,11 @@ const ProductDetailPage = () => {
                   <Link
                     key={relatedProduct.id}
                     to={`/product/${relatedProduct.id}`}
-                    className="group bg-card rounded-squircle-xl overflow-hidden shadow-soft hover:shadow-card transition-all duration-500 border border-border/50 hover:border-lime/30"
+                    className="group bg-card rounded-squircle-xl overflow-hidden shadow-soft hover:shadow-card transition-all duration-500 border border-border/50 hover:border-lime/30 relative"
                   >
+                    <div className="absolute top-3 right-3 z-10">
+                      <WishlistButton product={relatedProduct} size="sm" />
+                    </div>
                     <div className="aspect-square overflow-hidden bg-secondary/30">
                       <img
                         src={relatedProduct.image}

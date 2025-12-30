@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { getProductsByCategory, categories, Product } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
+import WishlistButton from "@/components/WishlistButton";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -161,6 +162,10 @@ const ProductsPage = () => {
                       {product.badge}
                     </div>
                   )}
+                  {/* Wishlist Button */}
+                  <div className="absolute top-4 right-4 z-10">
+                    <WishlistButton product={product} size="sm" />
+                  </div>
                   <img
                     src={product.image}
                     alt={product.name}

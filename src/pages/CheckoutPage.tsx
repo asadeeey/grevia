@@ -145,16 +145,15 @@ const CheckoutPage = () => {
                   </div>
                 </div>
 
-                {/* Shipping Address */}
+                {/* Billing Address (Optional) */}
                 <div className="bg-card rounded-squircle-xl p-6 border border-border/50">
-                  <h2 className="text-xl font-bold text-foreground mb-6">Shipping Address</h2>
+                  <h2 className="text-xl font-bold text-foreground mb-6">Billing Address <span className="text-sm font-normal text-muted-foreground">(Optional)</span></h2>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="sm:col-span-2">
                       <Label htmlFor="address">Street Address</Label>
                       <Input
                         id="address"
                         name="address"
-                        required
                         value={formData.address}
                         onChange={handleInputChange}
                         placeholder="123 Main Street, Apartment 4B"
@@ -166,22 +165,9 @@ const CheckoutPage = () => {
                       <Input
                         id="city"
                         name="city"
-                        required
                         value={formData.city}
                         onChange={handleInputChange}
                         placeholder="Mumbai"
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="state">State</Label>
-                      <Input
-                        id="state"
-                        name="state"
-                        required
-                        value={formData.state}
-                        onChange={handleInputChange}
-                        placeholder="Maharashtra"
                         className="mt-1"
                       />
                     </div>
@@ -190,7 +176,6 @@ const CheckoutPage = () => {
                       <Input
                         id="pincode"
                         name="pincode"
-                        required
                         value={formData.pincode}
                         onChange={handleInputChange}
                         placeholder="400001"
