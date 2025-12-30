@@ -28,11 +28,30 @@ const itemVariants = {
 };
 
 const ProductsPage = () => {
-  const { category } = useParams<{ category: string }>();
-  const { addToCart, setIsCartOpen } = useCart();
+  const { category, subcategory } = useParams<{ category: string; subcategory?: string }>();
+  const { addToCart } = useCart();
   
-  const categoryData = categories.find((c) => c.id === category);
-  const products = getProductsByCategory(category as Product["category"]);
+  // Handle subcategory routing for sweeteners
+  let categoryData;
+  let products: Product[];
+  let pageTitle: string;
+  let pageDescription: string;
+
+  if (category === "sweeteners" && subcategory) {
+    // Subcategory page (stevia or monkfruit)
+    categoryData = categories.find((c) => c.id === subcategory);
+    products = getProductsByCategory("sweeteners", subcategory);
+    pageTitle = subcategory === "stevia" ? "Stevia Sweeteners" : "Monkfruit Sweeteners";
+    pageDescription = subcategory === "stevia" 
+      ? "Pure stevia-based natural sweeteners for a healthier lifestyle"
+      : "Premium monk fruit-based sweeteners with zero glycemic impact";
+  } else {
+    // Regular category page
+    categoryData = categories.find((c) => c.id === category);
+    products = getProductsByCategory(category as Product["category"]);
+    pageTitle = categoryData?.name || "Products";
+    pageDescription = categoryData?.description || "";
+  }
 
   const handleAddToCart = (product: Product) => {
     addToCart(product);
@@ -41,7 +60,7 @@ const ProductsPage = () => {
     });
   };
 
-  if (!categoryData) {
+  if (!categoryData && !subcategory) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -69,13 +88,23 @@ const ProductsPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
-            </Link>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Link to="/" className="hover:text-primary transition-colors">
+                Home
+              </Link>
+              <span>/</span>
+              {subcategory ? (
+                <>
+                  <Link to="/products/sweeteners" className="hover:text-primary transition-colors">
+                    Sweeteners
+                  </Link>
+                  <span>/</span>
+                  <span className="text-foreground">{pageTitle}</span>
+                </>
+              ) : (
+                <span className="text-foreground">{pageTitle}</span>
+              )}
+            </div>
           </motion.div>
 
           {/* Page Header */}
@@ -89,12 +118,28 @@ const ProductsPage = () => {
               Our Collection
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-tight mb-4">
-              {categoryData.name}
+              {pageTitle}
             </h1>
             <p className="text-lg text-muted-foreground">
-              {categoryData.description}
+              {pageDescription}
             </p>
           </motion.div>
+
+          {/* Subcategory Navigation for Sweeteners */}
+          {category === "sweeteners" && !subcategory && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-wrap justify-center gap-4 mb-12"
+            >
+              <Button asChild variant="outline" size="lg">
+                <Link to="/products/sweeteners/stevia">Stevia Sweeteners</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link to="/products/sweeteners/monkfruit">Monkfruit Sweeteners</Link>
+              </Button>
+            </motion.div>
+          )}
 
           {/* Products Grid */}
           <motion.div
