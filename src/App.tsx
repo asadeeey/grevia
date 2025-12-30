@@ -10,6 +10,8 @@ import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import BenefitsPage from "./pages/BenefitsPage";
+import ContactPage from "./pages/ContactPage";
 import CartDrawer from "./components/CartDrawer";
 
 const queryClient = new QueryClient();
@@ -24,7 +26,10 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/benefits" element={<BenefitsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/products/:category" element={<ProductsPage />} />
+            <Route path="/products/:category/:subcategory" element={<ProductsPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order-confirmation" element={<OrderConfirmationPage />} />

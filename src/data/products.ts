@@ -17,12 +17,13 @@ export interface Product {
   image: string;
   images: string[];
   category: "sweeteners" | "bakery" | "pickles";
+  subcategory?: "stevia" | "monkfruit";
   badge?: string;
   inStock: boolean;
 }
 
 export const products: Product[] = [
-  // Sweeteners
+  // Stevia Sweeteners
   {
     id: "stevia-jar",
     name: "Grevia Stevia Jar",
@@ -35,6 +36,7 @@ export const products: Product[] = [
     image: product1,
     images: [product1],
     category: "sweeteners",
+    subcategory: "stevia",
     badge: "Best Seller",
     inStock: true,
   },
@@ -50,9 +52,26 @@ export const products: Product[] = [
     image: product2,
     images: [product2],
     category: "sweeteners",
+    subcategory: "stevia",
     badge: "New",
     inStock: true,
   },
+  {
+    id: "stevia-sachets",
+    name: "Grevia Stevia Sachets",
+    description: "Convenient single-serve stevia packets",
+    longDescription: "Perfect for on-the-go sweetening, our Stevia Sachets offer pre-measured portions of pure stevia extract. Ideal for office, travel, or restaurants where you want to enjoy natural sweetness anywhere.",
+    ingredients: ["Organic Stevia Leaf Extract", "Natural Fiber"],
+    price: 199,
+    rating: 4.7,
+    reviews: 65,
+    image: product1,
+    images: [product1],
+    category: "sweeteners",
+    subcategory: "stevia",
+    inStock: true,
+  },
+  // Monkfruit Sweeteners
   {
     id: "monkfruit-drops",
     name: "Grevia Monkfruit Drops",
@@ -65,7 +84,38 @@ export const products: Product[] = [
     image: product3,
     images: [product3],
     category: "sweeteners",
-    badge: null,
+    subcategory: "monkfruit",
+    inStock: true,
+  },
+  {
+    id: "monkfruit-powder",
+    name: "Grevia Monkfruit Powder",
+    description: "Pure monkfruit in premium packaging",
+    longDescription: "Experience the natural sweetness of monk fruit with our premium powder. This zero-calorie sweetener is perfect for baking, cooking, and everyday use. Made from carefully selected monk fruit with no artificial additives.",
+    ingredients: ["Pure Monk Fruit Extract", "Erythritol (Non-GMO)"],
+    price: 449,
+    rating: 4.8,
+    reviews: 82,
+    image: product3,
+    images: [product3],
+    category: "sweeteners",
+    subcategory: "monkfruit",
+    badge: "Premium",
+    inStock: true,
+  },
+  {
+    id: "monkfruit-blend",
+    name: "Grevia Monkfruit Blend",
+    description: "Perfect blend for baking and cooking",
+    longDescription: "Our Monkfruit Blend is specially formulated for baking and cooking. It measures cup-for-cup like sugar, making it easy to substitute in your favorite recipes while maintaining the same great taste.",
+    ingredients: ["Monk Fruit Extract", "Allulose", "Natural Flavors"],
+    price: 399,
+    rating: 4.6,
+    reviews: 48,
+    image: product3,
+    images: [product3],
+    category: "sweeteners",
+    subcategory: "monkfruit",
     inStock: true,
   },
   // Bakery Items
@@ -96,7 +146,6 @@ export const products: Product[] = [
     image: bakeryCategory,
     images: [bakeryCategory],
     category: "bakery",
-    badge: null,
     inStock: true,
   },
   {
@@ -111,7 +160,6 @@ export const products: Product[] = [
     image: bakeryCategory,
     images: [bakeryCategory],
     category: "bakery",
-    badge: null,
     inStock: true,
   },
   // Pickles & Preserves
@@ -142,7 +190,6 @@ export const products: Product[] = [
     image: picklesCategory,
     images: [picklesCategory],
     category: "pickles",
-    badge: null,
     inStock: true,
   },
   {
@@ -169,6 +216,18 @@ export const categories = [
     description: "Natural sweeteners for health-conscious living",
   },
   {
+    id: "stevia",
+    name: "Stevia Sweeteners",
+    description: "Pure stevia-based natural sweeteners",
+    parentCategory: "sweeteners",
+  },
+  {
+    id: "monkfruit",
+    name: "Monkfruit Sweeteners",
+    description: "Premium monk fruit-based sweeteners",
+    parentCategory: "sweeteners",
+  },
+  {
     id: "bakery",
     name: "Bakery Items",
     description: "Freshly prepared, minimally processed baked goods made for everyday indulgence.",
@@ -182,7 +241,10 @@ export const categories = [
   },
 ];
 
-export const getProductsByCategory = (category: Product["category"]) => {
+export const getProductsByCategory = (category: Product["category"], subcategory?: string) => {
+  if (subcategory) {
+    return products.filter((p) => p.category === category && p.subcategory === subcategory);
+  }
   return products.filter((p) => p.category === category);
 };
 
