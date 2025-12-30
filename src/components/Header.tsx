@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
+import { ShoppingCart, Menu, X, ChevronDown, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import greviaLogo from "@/assets/grevia-logo.png";
 
 interface DropdownItem {
@@ -22,8 +23,10 @@ const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const { setIsCartOpen, getCartCount, getCartTotal } = useCart();
+  const { getWishlistCount } = useWishlist();
   const cartCount = getCartCount();
   const cartTotal = getCartTotal();
+  const wishlistCount = getWishlistCount();
 
   const navItems: NavItem[] = [
     { name: "Home", href: "/" },
@@ -115,7 +118,22 @@ const Header = () => {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Wishlist Icon */}
+            <Link
+              to="/wishlist"
+              className="relative p-2 rounded-squircle hover:bg-secondary/50 transition-colors group"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-5 h-5 text-foreground group-hover:text-red-500 transition-colors" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-in zoom-in duration-200">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Cart */}
             <button 
               onClick={() => setIsCartOpen(true)}
               className="relative flex items-center gap-2 px-3 py-2 rounded-squircle hover:bg-secondary/50 transition-colors group"
@@ -141,7 +159,22 @@ const Header = () => {
           </div>
 
           {/* Mobile Cart & Menu */}
-          <div className="lg:hidden flex items-center gap-2">
+          <div className="lg:hidden flex items-center gap-1">
+            {/* Wishlist */}
+            <Link
+              to="/wishlist"
+              className="relative p-2 rounded-squircle hover:bg-secondary/50 transition-colors"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-5 h-5 text-foreground" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Cart */}
             <button 
               onClick={() => setIsCartOpen(true)}
               className="relative flex items-center gap-1 px-2 py-2 rounded-squircle hover:bg-secondary/50 transition-colors"
