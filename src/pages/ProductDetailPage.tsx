@@ -15,6 +15,7 @@ const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { addToCart, setIsCartOpen } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   
   const product = getProductById(id || "");
   const relatedProducts = product
@@ -76,16 +77,52 @@ const ProductDetailPage = () => {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <ImageZoom 
-                src={product.image} 
-                alt={product.name}
-                badge={product.badge}
-              />
-              
-              {/* Wishlist Button - Positioned on image */}
-              <div className="absolute top-4 right-4 z-10">
-                <WishlistButton product={product} size="lg" />
+              {/* Main Image */}
+              <div className="relative">
+                <ImageZoom 
+                  src={product.images[selectedImageIndex] || product.image} 
+                  alt={product.name}
+                  badge={product.badge}
+                />
+                
+                {/* Wishlist Button - Positioned on image */}
+                <div className="absolute top-4 right-4 z-10">
+                  <WishlistButton product={product} size="lg" />
+                </div>
               </div>
+
+              {/* Thumbnail Gallery */}
+              {product.images.length > 1 && (
+                <div className="flex gap-3 mt-4 overflow-x-auto pb-2">
+                  {product.images.map((img, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={`relative flex-shrink-0 w-20 h-20 rounded-squircle overflow-hidden border-2 transition-all duration-300 ${
+                        selectedImageIndex === index
+                          ? "border-lime ring-2 ring-lime/30"
+                          : "border-border/50 hover:border-muted-foreground"
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <img
+                        src={img}
+                        alt={`${product.name} view ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      {selectedImageIndex === index && (
+                        <motion.div
+                          layoutId="thumbnail-indicator"
+                          className="absolute inset-0 bg-lime/10"
+                          initial={false}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              )}
             </motion.div>
 
             {/* Product Info */}
